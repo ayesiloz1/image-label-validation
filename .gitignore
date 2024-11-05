@@ -1,0 +1,32 @@
+# Ignore dataset directory
+potentially_mislabeled/
+Bowtie/
+# Ignore local SQLite database (not needed when using PostgreSQL on a cloud platform)
+votes.db
+
+# Ignore Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Ignore virtual environment folder
+image-voting-env/
+
+# Ignore environment and secret files
+*.env
+*.env.*
+.env.local
+.streamlit/secrets.toml  # Only if you don’t want to include secrets.toml in GitHub
+
+# Ignore log files
+*.log
+
+# Ignore any MacOS and Windows generated files
+.DS_Store
+Thumbs.db
+
+# Ignore any user-specific IDE configurations
+.vscode/
+.idea/
+*.swp
