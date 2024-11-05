@@ -1,9 +1,21 @@
 # app.py
+import argparse
 import streamlit as st
 from PIL import Image
 import database
 import voting
 import os
+
+# Parse command-line arguments
+def get_args():
+    parser = argparse.ArgumentParser(description="Image Classification Voting System")
+    parser.add_argument('--admin_password', type=str, required=True, 
+                        help="Admin password to reset votes.")
+    return parser.parse_args()
+
+# Get password from command-line arguments
+args = get_args()
+ADMIN_PASSWORD = args.admin_password
 
 # Initialize the database (create table if needed)
 database.init_db()
@@ -76,14 +88,13 @@ with open(csv_file, "rb") as file:
         mime="text/csv"
     )
 
-# Admin-only Reset Votes button
+# Admin-only Reset Votes button with unique key
 with st.expander("Admin Panel"):
     admin_input = st.text_input("Enter admin password to reset votes", type="password")
-    if admin_input == "your_admin_password":  # replace with a secure password
-        if st.button("Reset Votes"):
-            database.reset_votes()
-            st.warning("All votes have been reset.")
-            st.session_state.voted_images = []
-            st.rerun()
-    elif admin_input and admin_input != "your_admin_password":
+    if st.button("Reset Votes", key="admin_reset") and admin_input == ADMIN_PASSWORD:
+        database.reset_votes()
+        st.warning("All votes have been reset.")
+        st.session_state.voted_images = []
+        st.rerun()
+    elif admin_input and admin_input != ADMIN_PASSWORD:
         st.error("Incorrect password.")

@@ -1,6 +1,7 @@
 # voting.py
 import os
 import random
+import pandas as pd
 import database
 
 # Path to your images directory
@@ -17,7 +18,7 @@ def get_random_unvoted_image(voted_images):
     else:
         return None
 
-# Function to export the voting data to a CSV file
+# Function to export the voting data to a CSV file for external analysis
 def export_votes_to_csv():
     vote_data = database.get_vote_summary()
     csv_file = "vote_results.csv"
