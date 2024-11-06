@@ -4,6 +4,9 @@ Bowtie/
 # Ignore local SQLite database 
 votes.db
 vote_results.csv
+good_votes.csv
+good/
+reject/
 
 # Ignore Python cache and compiled files
 __pycache__/

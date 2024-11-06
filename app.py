@@ -27,12 +27,18 @@ st.title("Image Classification Voting System")
 if 'voted_images' not in st.session_state:
     st.session_state.voted_images = []
 
-# Get a random image that the user has not voted on
-selected_image = voting.get_random_unvoted_image(st.session_state.voted_images)
+# Get the list of all images in the folder
+all_images = sorted(os.listdir(voting.IMAGE_FOLDER))
 
-if not selected_image:
+# Filter out the images that have already been voted on
+unvoted_images = [img for img in all_images if img not in st.session_state.voted_images]
+
+if not unvoted_images:
     st.subheader("You have voted on all images. Thank you!")
 else:
+    # Get the next image to vote on
+    selected_image = unvoted_images[0]
+
     # Display image title above the image
     st.subheader(f"Image: {selected_image}")
     st.markdown("---")
@@ -44,7 +50,7 @@ else:
     with col1:
         image_path = os.path.join(voting.IMAGE_FOLDER, selected_image)
         image = Image.open(image_path)
-        max_width, max_height = 400, 400
+        max_width, max_height = 1000, 1000
         image.thumbnail((max_width, max_height))
         st.image(image, use_column_width=True)
 
