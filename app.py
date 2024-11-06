@@ -98,4 +98,4 @@ with st.expander("Admin Panel"):
         st.session_state.voted_images = []
         st.rerun()
     elif admin_input and admin_input != ADMIN_PASSWORD:
-        st.error("Incorrect password.")
+        st.error("Incorrect password! Please try again.")
