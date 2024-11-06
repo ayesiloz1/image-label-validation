@@ -6,7 +6,7 @@ import database
 import voting
 import os
 
-# Parse command-line arguments to create an password so we can reset votes 
+# Parse command-line arguments
 def get_args():
     parser = argparse.ArgumentParser(description="Image Classification Voting System")
     parser.add_argument('--admin_password', type=str, required=True, 
@@ -33,7 +33,8 @@ selected_image = voting.get_random_unvoted_image(st.session_state.voted_images)
 if not selected_image:
     st.subheader("You have voted on all images. Thank you!")
 else:
-
+    # Display image title above the image
+    st.subheader(f"Image: {selected_image}")
     st.markdown("---")
 
     # Set up two columns: one for the image and one for the voting interface
@@ -41,36 +42,34 @@ else:
 
     # Display the image in the left column
     with col1:
-            # Display image title above the image
-        st.subheader(f"Image: {selected_image}")
         image_path = os.path.join(voting.IMAGE_FOLDER, selected_image)
         image = Image.open(image_path)
-        max_width, max_height = 1000, 750
+        max_width, max_height = 400, 400
         image.thumbnail((max_width, max_height))
         st.image(image, use_column_width=True)
 
     # Display the voting interface in the right column
     with col2:
-        # Add some vertical space
-        st.write("")
-        st.write("")
-        st.write("")
-        st.write("")
-        st.write("")
-        
+        # Display current vote counts for the selected image
+        good_votes, reject_votes = database.get_vote_counts(selected_image)
+        st.markdown("**Current Votes:**")
+        st.write(f"👍 Good: {good_votes}")
+        st.write(f"👎 Reject: {reject_votes}")
+        st.markdown("---")
+
         # Voting with two buttons: Good and Reject
         if st.button("Good 👍", key="good_vote"):
             database.insert_vote(selected_image, "Good")
-            # lower the buttons 
             st.session_state.voted_images.append(selected_image)
             st.success(f"Thank you! You voted: Good for {selected_image}")
             st.rerun()
-    
+
         if st.button("Reject 👎", key="reject_vote"):
             database.insert_vote(selected_image, "Reject")
             st.session_state.voted_images.append(selected_image)
             st.success(f"Thank you! You voted: Reject for {selected_image}")
             st.rerun()
+
 # Add spacing and a divider
 st.markdown("---")
 
@@ -98,4 +97,4 @@ with st.expander("Admin Panel"):
         st.session_state.voted_images = []
         st.rerun()
     elif admin_input and admin_input != ADMIN_PASSWORD:
-        st.error("Incorrect password! Please try again.")
+        st.error("Incorrect password.")
