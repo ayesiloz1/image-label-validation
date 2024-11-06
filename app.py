@@ -6,7 +6,7 @@ import database
 import voting
 import os
 
-# Parse command-line arguments
+# Parse command-line arguments to create an password so we can reset votes 
 def get_args():
     parser = argparse.ArgumentParser(description="Image Classification Voting System")
     parser.add_argument('--admin_password', type=str, required=True, 
