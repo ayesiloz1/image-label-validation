@@ -1,4 +1,5 @@
 # Ignore dataset directory
+potentially_mislabeled/
 Bowtie/
 # Ignore local SQLite database 
 votes.db
