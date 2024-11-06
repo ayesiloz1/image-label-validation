@@ -50,12 +50,6 @@ else:
 
     # Display the voting interface in the right column
     with col2:
-        # Display current vote counts for the selected image
-        good_votes, reject_votes = database.get_vote_counts(selected_image)
-        st.markdown("**Current Votes:**")
-        st.write(f"👍 Good: {good_votes}")
-        st.write(f"👎 Reject: {reject_votes}")
-        st.markdown("---")
 
         # Voting with two buttons: Good and Reject
         if st.button("Good 👍", key="good_vote"):
